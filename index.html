@@ -85,19 +85,26 @@
 
 <section class="panel" id="tab-scan">
   <div class="scan-box">
-    <p>عکس گل را با دوربین بگیر یا از گالری انتخاب کن.</p>
+    <p>برای شناسایی گل از روی عکس، سایت Pl@ntNet را باز کن، عکس بگیر و نام گل را بخوان. بعد همان گل را اینجا از لیست انتخاب کن تا طرز نگهداری‌اش را ببینی.</p>
+    <a class="btn" href="https://identify.plantnet.org/fa" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;margin-bottom:14px">🌐 شناسایی گل با Pl@ntNet</a>
+    <p class="note">(برای این کار فیلترشکن باید روشن باشد.)</p>
+    <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
+    <p>یا گل را از لیست انتخاب کن:</p>
+    <select id="manualTop" onchange="if(this.value)openPlant(this.value)" style="width:100%;padding:12px;border-radius:12px;border:1px solid #ccc;font-size:16px;margin-bottom:14px"></select>
+    <div style="display:none">
     <input type="file" id="fileInput" accept="image/*" capture="environment" style="display:none">
     <button class="btn" onclick="document.getElementById('fileInput').click()">📸 گرفتن عکس</button>
     <div id="preview"></div>
     <button class="btn" id="identifyBtn" disabled onclick="identify()">🔎 شناسایی گل</button>
     <div id="scanResult"></div>
+    </div>
   </div>
 </section>
 
 <section class="panel" id="tab-settings">
   <div class="result">
     <h3>کلید API شناسایی (Pl@ntNet)</h3>
-    <p class="note">برای شناسایی واقعی با دوربین، یک کلید رایگان از my.plantnet.org بگیر و در خط زیر بگذار. بدون کلید، می‌توانی گل را از لیست دستی انتخاب کنی.</p>
+    <p class="note">این بخش اختیاری است و برای کار کردن برنامه لازم نیست.</p>
     <input type="search" id="apiKey" placeholder="API key">
     <button class="btn" onclick="saveKey()">ذخیره</button>
     <p class="note" id="keyStatus"></p>
@@ -974,6 +981,10 @@ function showSec(btn){
 function closeModal(){ document.getElementById('modal').classList.remove('open'); }
 
 // ---------- camera scan ----------
+(function(){
+  const sel = document.getElementById('manualTop');
+  sel.innerHTML = '<option value="">— انتخاب گل —</option>' + PLANTS.map(p => `<option value="${p.id}">${p.fa} (${p.en})</option>`).join('');
+})();
 let selectedFile = null;
 document.getElementById('fileInput').addEventListener('change', e => {
   selectedFile = e.target.files[0];
